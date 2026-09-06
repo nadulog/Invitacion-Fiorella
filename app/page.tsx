@@ -62,14 +62,14 @@ function useCountdown() {
 }
 
 const sections = [
-  { image: "/01-portada.png", label: "Portada: Fiorella, mis quince" },
+  { image: "/01-portada.png?v=20260906-nueva-portada", label: "Portada: Fiorella, mis quince" },
   { image: "/02-contador-clean.png", label: "Cuenta regresiva" },
   { image: "/03-fecha.png", label: "Fecha y hora" },
   { image: "/04-ubicacion.png", label: "Cómo llegar" },
-  { image: "/05-dresscode.png", label: "Dress code elegante" },
-  { image: "/06-regalos.png", label: "Regalos" },
+  { image: "/05-dresscode.png?v=20260906-nuevo-dress-code", label: "Dress code elegante" },
+  { image: "/06-regalos.png?v=20260906-nuevos-regalos", label: "Regalos" },
   { image: "/07-musica.png", label: "Música" },
-  { image: "/08-rsvp.png?v=fiorella-corrected", label: "Confirmación de asistencia" },
+  { image: "/08-rsvp.png?v=20260906-nuevo-cierre", label: "Confirmación de asistencia" },
 ];
 
 export default function Home() {
@@ -233,7 +233,7 @@ export default function Home() {
             <p>Si querés hacerme un regalo, podés usar estos datos:</p>
             <dl className="gift-details">
               <div><dt>ALIAS</dt><dd>fio.galiatti</dd></div>
-              <div><dt>TITULAR</dt><dd>Galiatti Yamil Adrian</dd></div>
+              <div><dt>TITULAR</dt><dd>Fiorella Galiatti Micheltorena</dd></div>
               <div><dt>ENTIDAD</dt><dd>Banco Credicoop</dd></div>
             </dl>
             <button className="copy" onClick={copyAlias}>{copied ? "¡ALIAS COPIADO!" : "COPIAR ALIAS"}</button>
