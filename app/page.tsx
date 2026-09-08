@@ -132,7 +132,7 @@ export default function Home() {
 
       {introOpen && (
         <section className={`invitation-intro ${introLeaving ? "is-leaving" : ""}`} aria-label="Bienvenida a los XV de Fiorella">
-          <img className="invitation-intro-image" src="/fiorella-intro.png" alt="Fiorella, mis XV" />
+          <img className="invitation-intro-image" src="/fiorella-intro.png?v=20260908" alt="Fiorella, mis XV" />
           <button className="intro-choice intro-choice-music" onClick={() => enterInvitation(true)} disabled={introLeaving} aria-label="Entrar con música" />
           <button className="intro-choice intro-choice-silent" onClick={() => enterInvitation(false)} disabled={introLeaving} aria-label="Entrar sin música" />
           <div className="intro-bird-flock" aria-hidden="true">

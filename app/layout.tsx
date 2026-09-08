@@ -4,7 +4,7 @@ import "./globals.css";
 const siteUrl = "https://bloomdate-fiorella15.netlify.app";
 const title = "Fiorella · Mis XV";
 const description = "¡Mis XV se acercan! 💕 Te invito a compartir conmigo una noche inolvidable. 7 de noviembre de 2026 · 21 hs.";
-const socialImage = `${siteUrl}/og-fiorella-20260906.jpg`;
+const socialImage = `${siteUrl}/og-fiorella-20260908.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -20,10 +20,10 @@ export const metadata: Metadata = {
     locale: "es_AR",
     images: [{
       url: socialImage,
-      width: 1200,
-      height: 630,
+      width: 1729,
+      height: 910,
       alt: "Fiorella celebra sus XV el 7 de noviembre a las 21 hs",
-      type: "image/jpeg",
+      type: "image/png",
     }],
   },
   twitter: {
