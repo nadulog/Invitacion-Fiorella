@@ -121,7 +121,7 @@ export default function Home() {
   };
 
   const copyAlias = async () => {
-    await navigator.clipboard.writeText("fio.galiatti");
+    await navigator.clipboard.writeText("FIORE.GALIATTI");
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
   };
@@ -232,8 +232,8 @@ export default function Home() {
             <h2 id="gift-title">Gracias por acompañarme</h2>
             <p>Si querés hacerme un regalo, podés usar estos datos:</p>
             <dl className="gift-details">
-              <div><dt>ALIAS</dt><dd>fio.galiatti</dd></div>
-              <div><dt>TITULAR</dt><dd>Fiorella Galiatti Micheltorena</dd></div>
+              <div><dt>ALIAS</dt><dd>FIORE.GALIATTI</dd></div>
+              <div><dt>TITULAR</dt><dd>Fiorella Galiatti Michaeltorena</dd></div>
               <div><dt>ENTIDAD</dt><dd>Banco Credicoop</dd></div>
             </dl>
             <button className="copy" onClick={copyAlias}>{copied ? "¡ALIAS COPIADO!" : "COPIAR ALIAS"}</button>
