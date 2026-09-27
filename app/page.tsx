@@ -7,6 +7,9 @@ const EVENT_DATE = new Date("2026-11-07T21:00:00-03:00");
 const SPOTIFY_PLAYLIST = "https://open.spotify.com/playlist/32EI0CECqq7pEZieSNSJrm?si=FApVZlLWSyCF-uptBp-vDw&utm_source=whatsapp&pt=12ab44d6e8841a78a9b71b33684abce7&pi=Jh1rAJv5Rw6vJ";
 const RSVP_URL = "https://bloomdate-rsvp.netlify.app/r/cumple-xv-fiorella";
 const MAP_URL = "https://maps.app.goo.gl/rHNCNMBexeXw2WCT6";
+const SUPABASE_URL = "https://fotugzhxlajyjdnjteld.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvdHVnemh4bGFqeWpkbmp0ZWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyNDY2MzAsImV4cCI6MjA4MDgyMjYzMH0.GnEzF-iJuiZJH5IVUgszWOq5qv4AeHfFf8Y3_YRW5FA";
+const RSVP_BASE = "https://bloomdate-rsvp.netlify.app";
 
 const BIRD_ROUTES = [
   ["-14%","18%","40%","10%","108%","28%","10deg","4deg","8deg"],
@@ -82,6 +85,62 @@ export default function Home() {
   const [introOpen, setIntroOpen] = useState(true);
   const [introLeaving, setIntroLeaving] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get("invite");
+    if (!token) return;
+
+    let cancelled = false;
+
+    const loadInvitation = async () => {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_invite_by_token`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ p_token: token }),
+        });
+        if (!response.ok || cancelled) return;
+
+        const rows = await response.json();
+        const invite = rows?.[0];
+        if (!invite || cancelled) return;
+
+        const companions = Array.isArray(invite.companions) ? invite.companions : [];
+        const names = [
+          invite.first_name,
+          ...companions.map((companion: { first_name?: string }) => companion.first_name),
+        ].filter(Boolean);
+        if (!names.length) return;
+
+        const namesElement = document.getElementById("nombres-invitados");
+        if (namesElement) {
+          namesElement.textContent = names.length === 1
+            ? names[0]
+            : `${names.slice(0, -1).join(", ")} y ${names[names.length - 1]}`;
+        }
+
+        const totalPasses = 1 + companions.length;
+        const passesElement = document.getElementById("cantidad-lugares");
+        if (passesElement) {
+          passesElement.textContent = `Tenés ${totalPasses} ${totalPasses === 1 ? "lugar reservado" : "lugares reservados"}`;
+        }
+
+        const confirmButton = document.getElementById("boton-confirmar") as HTMLAnchorElement | null;
+        if (confirmButton && invite.event_slug) {
+          confirmButton.href = `${RSVP_BASE}/r/${encodeURIComponent(invite.event_slug)}?invite=${encodeURIComponent(token)}`;
+        }
+      } catch {
+        return;
+      }
+    };
+
+    void loadInvitation();
+    return () => { cancelled = true; };
+  }, []);
 
   const toggleMusic = async () => {
     const audio = audioRef.current;
@@ -192,8 +251,21 @@ export default function Home() {
           {index === 3 && <button className="hotspot map-button" onClick={() => setMapOpen(true)} aria-label="Ver cómo llegar" />}
           {index === 5 && <button className="hotspot gift-button" onClick={() => setGiftOpen(true)} aria-label="Ver datos para regalo" />}
           {index === 6 && <a className="hotspot playlist-button" href={SPOTIFY_PLAYLIST} target="_blank" rel="noreferrer" aria-label="Abrir playlist de Fiorella en Spotify" />}
-          {index === 7 && <a className="hotspot rsvp-button" href={RSVP_URL} target="_blank" rel="noreferrer" aria-label="Confirmar asistencia" />}
+          {index === 7 && <a className="hotspot rsvp-button" id="boton-confirmar" href={RSVP_URL} target="_blank" rel="noreferrer" aria-label="Confirmar asistencia" />}
         </section>
+        {index === 0 && (
+          <section className="guest-invitation" aria-label="Invitación personalizada">
+            <div className="guest-invitation-frame">
+              <img className="guest-invitation-bird" src="/bird-pink-white.png?v=20260905-dusty-pink" alt="" aria-hidden="true" />
+              <p className="guest-invitation-eyebrow">ESTA INVITACIÓN FUE CREADA</p>
+              <p className="guest-invitation-lead">especialmente para</p>
+              <p className="guest-invitation-names" id="nombres-invitados" aria-live="polite"></p>
+              <span className="guest-invitation-ornament" aria-hidden="true">✦</span>
+              <p className="guest-invitation-passes" id="cantidad-lugares" aria-live="polite"></p>
+              <p className="guest-invitation-closing">Me hace muy feliz compartir<br />este momento con ustedes</p>
+            </div>
+          </section>
+        )}
         {index === 5 && (
           <section className="paper-gallery" aria-label="Galería de fotos de Fiorella">
             {GALLERY_PHOTOS.map((photo, photoIndex) => (
